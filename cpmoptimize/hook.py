@@ -3,17 +3,19 @@
 
 import byteplay
 
-import profiler
-import run
-from matcode import *
+from . import profiler
+from . import run
+from .matcode import *
 
 
 class CPMRange(object):
-    # Built-in xrange iterator in Python 2 doesn't support "long" type.
-    # This is replacement for it. All abilities of original xrange are
-    # saved (this implementation almost completely passes Python 2.7.8
-    # xrange unit tests, see file "test_xranges.py").
-    
+    """
+    Built-in xrange iterator in Python 2 doesn't support "long" type.
+    This is replacement for it. All abilities of original xrange are
+    saved (this implementation almost completely passes Python 2.7.8
+    xrange unit tests, see file "test_xranges.py").
+    """
+
     def __init__(self, arg1, arg2=None, step=1):
         if arg2 is None:
             arg1, arg2 = 0, arg1
@@ -37,7 +39,6 @@ class CPMRange(object):
         while cmp(number, self._stop) == cmp(0, self._step):
             yield number
             number += self._step
-
 
     def __contains__(self, value):
         if value == self._start:
@@ -96,6 +97,7 @@ def check_iterable(settings, iterable):
     last = iterable[-1]
     return start, step, iters_count, last
 
+
 def get_var_space(straight, globals_dict, locals_dict):
     arg_type, name = straight
     if arg_type == NAME:
@@ -109,6 +111,7 @@ def get_var_space(straight, globals_dict, locals_dict):
     return None
 
 var_undef_value = 0
+
 
 def load_vars(settings, used_vars, globals_dict, locals_dict):
     vector = []
@@ -150,10 +153,8 @@ def define_values(matcode, folded, params):
     return new_matcode
 
 
-def exec_loop(
-    iterable, settings, matcode, used_vars, real_vars_indexes,
-    need_store_counter, globals_dict, locals_dict, folded,
-):
+def exec_loop(iterable, settings, matcode, used_vars, real_vars_indexes,
+              need_store_counter, globals_dict, locals_dict, folded):
     try:
         # Check whether iterable for-loop argument has type "xrange"
         range_desc = check_iterable(settings, iterable)

@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import core
+from . import core
 
 start = 3
 coeff = 5
+
 
 def naive(count):
     elem = start
@@ -13,6 +14,7 @@ def naive(count):
         res += elem
         elem *= coeff
     return res
+
 
 def _optimal(first, count):
     # Returns (sum, coeff ** count)

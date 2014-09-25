@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import core
+from . import core
 
 base = 78
+
 
 def naive(n):
     res = 1
     for i in xrange(n):
         res *= base
     return res
+
 
 def binary_exp(n):
     """Binary exponentiation algorithm"""
@@ -25,6 +27,7 @@ def binary_exp(n):
                 return res
         cur *= cur
         n >>= 1
+
 
 def built_in(n):
     return base ** n

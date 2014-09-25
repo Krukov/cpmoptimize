@@ -3,12 +3,13 @@
 
 from itertools import izip
 
-from matcode import *
-from matrices import Matrix
+from .matcode import *
+from .matrices import Matrix
 
 
 class MatcodeFoldingError(RuntimeError):
     pass
+
 
 class InvalidMatcodeError(RuntimeError):
     pass
@@ -21,17 +22,20 @@ def handle_mov(table, dest, src):
     else:
         table[src[1]][dest[1]] = 1
 
+
 def handle_add(table, dest, src):
     if src[0] == VALUE:
         table[-1][dest[1]] = src[1]
     else:
         table[src[1]][dest[1]] = 1
 
+
 def handle_sub(table, dest, src):
     if src[0] == VALUE:
         table[-1][dest[1]] = -src[1]
     else:
         table[src[1]][dest[1]] = -1
+
 
 def handle_mul(table, dest, src):
     if src[0] == VALUE:
@@ -97,6 +101,7 @@ def skip_rows(mat):
             row.append(mat.content[y][x])
         lite_content.append(row)
     return Matrix(lite_content), unskipped_indexes, fix_mat
+
 
 def restore_rows(lite_mat, unskipped_indexes, fix_mat):
     mat = Matrix.identity(fix_mat.rows)

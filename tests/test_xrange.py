@@ -6,7 +6,8 @@ module. Our version of xrange supports long numbers, therefore
 tests for OverflowError are disabled.
 """
 
-import test.test_support, unittest
+from test import test_support
+import unittest
 import sys
 import pickle
 import itertools
@@ -33,6 +34,7 @@ def pyrange(start, stop, step):
         while start != stop:
             yield start
             start += step
+
 
 def pyrange_reversed(start, stop, step):
     stop += (start - stop) % step
@@ -227,7 +229,7 @@ class XrangeTest(unittest.TestCase):
 
 
 def test_main():
-    test.test_support.run_unittest(XrangeTest)
+    test_support.run_unittest(XrangeTest)
 
 if __name__ == "__main__":
     test_main()

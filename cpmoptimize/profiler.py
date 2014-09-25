@@ -4,6 +4,7 @@
 from time import time
 from traceback import format_exc
 
+
 def echo(settings, message):
     stream = settings['verbose']
     if stream is not None:
@@ -11,13 +12,16 @@ def echo(settings, message):
             time(), settings['head_lineno'], settings['repr'], message,
         ))
 
+
 def exc(settings, message, exc):
     if settings['strict']:
         raise exc
     echo(settings, '[-] %s:\n%s' % (message, format_exc(exc)[:-1]))
 
+
 def note(settings, message):
     echo(settings, '[*] ' + message)
+
 
 def success(settings, message):
     echo(settings, '[+] ' + message)

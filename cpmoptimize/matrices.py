@@ -3,6 +3,7 @@
 
 from itertools import izip
 
+
 class Matrix(object):
     def __init__(self, content):
         self.content = content
@@ -14,8 +15,7 @@ class Matrix(object):
                 int(i == j) for j in xrange(side)
             ] for i in xrange(side)
         ])
-        
-        
+
     @property
     def rows(self):
         return len(self.content)
@@ -26,8 +26,7 @@ class Matrix(object):
             return len(self.content[0])
         except IndexError:
             return 0
-    
-    
+
     def _do_mul(self, other):
         return Matrix([
             [
@@ -71,7 +70,6 @@ class Matrix(object):
             self = self._do_mul(self)
             n >>= 1
 
-
     def size_repr(self):
         return '%sx%s' % (self.rows, self.cols)
     
@@ -94,7 +92,6 @@ class Matrix(object):
     
     def __repr__(self):
         return 'Matrix %s:\n' % self.size_repr() + str(self)
-    
-    
+
     def transposed(self):
         return Matrix(map(list, izip(*self.content)))

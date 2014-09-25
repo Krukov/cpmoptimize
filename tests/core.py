@@ -17,6 +17,7 @@ support_plots = None
 # Directory where plots will be saved
 plots_dir = 'plots'
 
+
 def init_plots():
     global plt, support_plots
     
@@ -49,6 +50,7 @@ other_plots_size = 5, 5
 # Font size for plots
 lable_fontsize = 11
 normal_fontsize = 9
+
 
 def make_plot(filename, title, arguments, methods, scale):
     if not support_plots:
@@ -189,6 +191,7 @@ def linear_scale(max_value, count):
     base = max_value / count
     return [base * i for i in xrange(count + 1)]
 
+
 def log_scale(max_value, count):
     log_base = math.log(max_value) / count
     res = []
@@ -209,6 +212,7 @@ match_col_width = 5
 # If argument of functions is lesser or equal this value, comparison of
 # execution time of different implementations will not be executed
 compare_arg_border = 0
+
 
 def run(name, comment, functions, cases, exec_compare=True, draw_plot=True):
     if draw_plot:
@@ -287,6 +291,7 @@ def apply_options(settings, naive_func, clear_stack, min_rows):
     return (name, cpmoptimize(
         opt_clear_stack=clear_stack, opt_min_rows=min_rows, **settings
     )(naive_func))
+
 
 def optimized(naive_func, iters_limit=0, try_options=False):
     settings = {'strict': True, 'iters_limit': iters_limit}

@@ -6,12 +6,14 @@ import core
 
 from cpmoptimize.matrices import Matrix
 
+
 def naive(n):
     a = 0
     b = 1
     for i in xrange(n):
         a, b = b, a + b
     return a
+
 
 def classic_matrices(n):
     """Implementation via explicit fast matrix exponentiation"""
@@ -22,6 +24,7 @@ def classic_matrices(n):
         [0, 1],
         [1, 1],
     ]) ** (n - 1)).content[1][1]
+
 
 def _fast_doubling(n):
     # Returns (F[n], F[n + 1])
@@ -34,6 +37,7 @@ def _fast_doubling(n):
     if n & 1:
         return d, c + d
     return c, d
+
 
 def fast_doubling(n):
     """Fast doubling - implementation via matrix exponentiation

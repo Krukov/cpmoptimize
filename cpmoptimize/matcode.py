@@ -4,16 +4,19 @@
 import byteplay
 
 
-# Make constants from enumerate in globals
 def make_enum(variants):
+    """
+    Arguments' lifecycle:
+    Make constants from enumerate in globals
+    """
     class Variant(int):
         def __repr__(self):
             return variants[self]
-        
+
         __str__ = __repr__
-    
-    for index, elem in enumerate(variants):
-        globals()[elem] = Variant(index)
+
+    for i, elem in enumerate(variants):
+        globals()[elem] = Variant(i)
 
 
 # Operations in matrix code
@@ -24,12 +27,12 @@ make_enum(matcode_opers)
 matcode_arg_types = ' '.join([
     # Raw constant value
     'VALUE',
-    
+
     # Folded constant ID
     'CONST',
     # Named constant for various parameters
     'PARAM',
-    
+
     # Straight variable references
     'NAME GLOBAL FAST DEREF',
     # Variable for loop's counter
@@ -38,10 +41,10 @@ matcode_arg_types = ' '.join([
     'TOS FOLD_TOS',
     # List of instructions that makes folded constant value
     'FOLD',
-    
+
     # Reference to absolute stack position
     'STACK',
-    
+
     # Unified mutable variable ID
     'VAR',
 ]).split()

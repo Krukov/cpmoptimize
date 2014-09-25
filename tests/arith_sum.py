@@ -1,18 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import core
+from . import core
 
 from cpmoptimize import cpmoptimize, xrange
 
 start = 32
 step = 43
 
+
 def naive(count):
     res = 0
     for elem in xrange(start, start + step * count, step):
         res += elem
     return res
+
 
 def formula(count):
     return (start * 2 + step * (count - 1)) * count / 2

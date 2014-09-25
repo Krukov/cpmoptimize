@@ -21,6 +21,7 @@ def unsupported_instr():
             res += 2
     return res
 
+
 @cpmoptimize(verbose=sys.stderr)
 def unpredictable_operands():
     res = 1
@@ -28,12 +29,14 @@ def unpredictable_operands():
         res *= res
     return res
 
+
 @cpmoptimize(verbose=sys.stderr)
 def unallowed_constant():
     res = ''
     for i in xrange(6000):
         res += 'a'
     return res
+
 
 @cpmoptimize(verbose=sys.stderr)
 def fib(a_start, iterator):
@@ -50,5 +53,5 @@ fib(0, range(6000))
 fib('hello', xrange(6000))
 
 
-fib(0, xrange(1000)) # Skipped optimization
-fib(0, xrange(6000)) # Successful optimization
+fib(0, xrange(1000))  # Skipped optimization
+fib(0, xrange(6000))  # Successful optimization

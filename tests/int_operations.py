@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import core
+from . import core
 
 # Some global constant
 global_const = 4
 
+
 def naive(n):
     # Definition of using some global variable
-    global global_var
-    
     # Some local constants
     local_const = 9
     k1_base = 4

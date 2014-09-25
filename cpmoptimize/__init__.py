@@ -5,9 +5,9 @@ from types import FunctionType
 
 import byteplay
 
-import hook
-import profiler
-import recompiler
+from . import hook
+from . import profiler
+from . import recompiler
 
 
 orig_xrange = xrange
@@ -88,17 +88,13 @@ default_types = int, long
 default_iters_limit = 5000
 min_iters_limit = 2
 
-def cpmoptimize(
-    strict=False, iters_limit=default_iters_limit, types=default_types,
-    opt_min_rows=True, opt_clear_stack=True,
-    verbose=None,
-):
+
+def cpmoptimize(strict=False, iters_limit=default_iters_limit, types=default_types,
+                opt_min_rows=True, opt_clear_stack=True, verbose=None):
     iters_limit = max(iters_limit, min_iters_limit)
     settings = {}
-    for key in (
-        'strict', 'iters_limit', 'types',
-        'opt_min_rows', 'opt_clear_stack', 'verbose',
-    ):
+    for key in ('strict', 'iters_limit', 'types',
+                'opt_min_rows', 'opt_clear_stack', 'verbose'):
         settings[key] = locals()[key]
     
     def upgrade_func(func):
