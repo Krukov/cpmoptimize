@@ -4,13 +4,19 @@
 import math
 import os
 import sys
-from time import time
+from time import time, clock
 
 sys.path.append(os.path.pardir)
 from cpmoptimize import cpmoptimize
 
+# Copy paste from timeit
+if sys.platform == "win32":
+    # On Windows, the best timer is time.clock()
+    default_timer = clock
+else:
+    # On most other platforms the best timer is time.time()
+    default_timer = time
 
-# Functions for making plots
 
 support_plots = None
 
@@ -176,12 +182,13 @@ class Table(object):
             )
 
 
-# Function for measuring time of function running
-
 def measure_time(func, arg):
-    start = time()
+    """Function for measuring time of function running"""
+    start = default_timer()
     data = func(arg)
-    interval = time() - start
+    interval = default_timer() - start
+    if sys.platform == "win32":
+        interval = interval * 1000
     return interval, data
 
 
