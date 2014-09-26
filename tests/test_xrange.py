@@ -16,16 +16,9 @@ import warnings
 warnings.filterwarnings("ignore", "integer argument expected",
                         DeprecationWarning, "unittest")
 
-
-# Replace built-in xrange to xrange from cpmoptimize module
-import os
-
-sys.path.append(os.path.pardir)
-
-from cpmoptimize import xrange
+from cpmoptimize import xrange as cpmxrange
 
 
-# pure Python implementations (3 args only), for comparison
 def pyrange(start, stop, step):
     if (start - stop) // step < 0:
         # replace stop with next element in the sequence of integers
@@ -85,54 +78,54 @@ class XrangeTest(unittest.TestCase):
                 self.fail('{} and {} have different step: '
                           '{} and {} '.format(x, y, x_step, y_step))
 
-    def test_xrange(self):
-        self.assertEqual(list(xrange(3)), [0, 1, 2])
-        self.assertEqual(list(xrange(1, 5)), [1, 2, 3, 4])
-        self.assertEqual(list(xrange(0)), [])
-        self.assertEqual(list(xrange(-3)), [])
-        self.assertEqual(list(xrange(1, 10, 3)), [1, 4, 7])
-        self.assertEqual(list(xrange(5, -5, -3)), [5, 2, -1, -4])
+    def test_cpmxrangee(self):
+        self.assertEqual(list(cpmxrange(3)), [0, 1, 2])
+        self.assertEqual(list(cpmxrange(1, 5)), [1, 2, 3, 4])
+        self.assertEqual(list(cpmxrange(0)), [])
+        self.assertEqual(list(cpmxrange(-3)), [])
+        self.assertEqual(list(cpmxrange(1, 10, 3)), [1, 4, 7])
+        self.assertEqual(list(cpmxrange(5, -5, -3)), [5, 2, -1, -4])
 
         a = 10
         b = 100
         c = 50
 
-        self.assertEqual(list(xrange(a, a+2)), [a, a+1])
-        self.assertEqual(list(xrange(a+2, a, -1L)), [a+2, a+1])
-        self.assertEqual(list(xrange(a+4, a, -2)), [a+4, a+2])
+        self.assertEqual(list(cpmxrange(a, a+2)), [a, a+1])
+        self.assertEqual(list(cpmxrange(a+2, a, -1L)), [a+2, a+1])
+        self.assertEqual(list(cpmxrange(a+4, a, -2)), [a+4, a+2])
 
-        seq = list(xrange(a, b, c))
+        seq = list(cpmxrange(a, b, c))
         self.assertIn(a, seq)
         self.assertNotIn(b, seq)
         self.assertEqual(len(seq), 2)
 
-        seq = list(xrange(b, a, -c))
+        seq = list(cpmxrange(b, a, -c))
         self.assertIn(b, seq)
         self.assertNotIn(a, seq)
         self.assertEqual(len(seq), 2)
 
-        seq = list(xrange(-a, -b, -c))
+        seq = list(cpmxrange(-a, -b, -c))
         self.assertIn(-a, seq)
         self.assertNotIn(-b, seq)
         self.assertEqual(len(seq), 2)
 
-        self.assertRaises(TypeError, xrange)
-        self.assertRaises(TypeError, xrange, 1, 2, 3, 4)
-        self.assertRaises(ValueError, xrange, 1, 2, 0)
+        self.assertRaises(TypeError, cpmxrange)
+        self.assertRaises(TypeError, cpmxrange, 1, 2, 3, 4)
+        self.assertRaises(ValueError, cpmxrange, 1, 2, 0)
 
-        #self.assertRaises(OverflowError, xrange, 10**100, 10**101, 10**101)
+        #self.assertRaises(OverflowError, cpmxrange, 10**100, 10**101, 10**101)
 
-        self.assertRaises(TypeError, xrange, 0, "spam")
-        self.assertRaises(TypeError, xrange, 0, 42, "spam")
+        self.assertRaises(TypeError, cpmxrange, 0, "spam")
+        self.assertRaises(TypeError, cpmxrange, 0, 42, "spam")
 
-        self.assertEqual(len(xrange(0, sys.maxint, sys.maxint-1)), 2)
+        self.assertEqual(len(cpmxrange(0, sys.maxint, sys.maxint-1)), 2)
 
-        #self.assertRaises(OverflowError, xrange, -sys.maxint, sys.maxint)
-        #self.assertRaises(OverflowError, xrange, 0, 2*sys.maxint)
+        #self.assertRaises(OverflowError, cpmxrange, -sys.maxint, sys.maxint)
+        #self.assertRaises(OverflowError, cpmxrange, 0, 2*sys.maxint)
 
         r = xrange(-sys.maxint, sys.maxint, 2)
         self.assertEqual(len(r), sys.maxint)
-        #self.assertRaises(OverflowError, xrange, -sys.maxint-1, sys.maxint, 2)
+        #self.assertRaises(OverflowError, cpmxrange, -sys.maxint-1, sys.maxint, 2)
 
     def test_pickling(self):
         testcases = [(13,), (0, 11), (-22, 10), (20, 3, -1),
@@ -160,41 +153,9 @@ class XrangeTest(unittest.TestCase):
             ]
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             for t in large_testcases:
-                r = xrange(*t)
+                r = cpmxrange(*t)
                 r_out = pickle.loads(pickle.dumps(r, proto))
                 self.assert_xranges_equivalent(r_out, r)
-
-    def test_repr(self):
-        # Check that repr of an xrange is a valid representation
-        # of that xrange.
-
-        # Valid xranges have at most min(sys.maxint, sys.maxsize) elements.
-        M = min(sys.maxint, sys.maxsize)
-
-        testcases = [
-            (13,),
-            (0, 11),
-            (-22, 10),
-            (20, 3, -1),
-            (13, 21, 3),
-            (-2, 2, 2),
-            (0, M, 1),
-            (M, 0, -1),
-            (0, M, M - 1),
-            (M // 2, M, 1),
-            (0, -M, -1),
-            (0, -M, 1 - M),
-            (-M, M, 2),
-            (-M, M, 1024),
-            (-M, M, 10585),
-            (M, -M, -2),
-            (M, -M, -1024),
-            (M, -M, -10585),
-            ]
-        for t in testcases:
-            r = xrange(*t)
-            r_out = eval(repr(r))
-            self.assert_xranges_equivalent(r, r_out)
 
     def test_range_iterators(self):
         # see issue 7298
@@ -208,24 +169,16 @@ class XrangeTest(unittest.TestCase):
                        for step in (-2**63, -2**31, -2, -1, 1, 2)]
 
         for start, end, step in test_ranges:
-            try:
-                iter1 = xrange(start, end, step)
-            except OverflowError:
-                pass
-            else:
-                iter2 = pyrange(start, end, step)
-                test_id = "xrange({}, {}, {})".format(start, end, step)
-                # check first 100 entries
-                self.assert_iterators_equal(iter1, iter2, test_id, limit=100)
+            iter1 = cpmxrange(start, end, step)
+            iter2 = pyrange(start, end, step)
+            test_id = "xrange({}, {}, {})".format(start, end, step)
+            # check first 100 entries
+            self.assert_iterators_equal(iter1, iter2, test_id, limit=100)
 
-            try:
-                iter1 = reversed(xrange(start, end, step))
-            except OverflowError:
-                pass
-            else:
-                iter2 = pyrange_reversed(start, end, step)
-                test_id = "reversed(xrange({}, {}, {}))".format(start, end, step)
-                self.assert_iterators_equal(iter1, iter2, test_id, limit=100)
+            iter1 = reversed(cpmxrange(start, end, step))
+            iter2 = pyrange_reversed(start, end, step)
+            test_id = "reversed(xrange({}, {}, {}))".format(start, end, step)
+            self.assert_iterators_equal(iter1, iter2, test_id, limit=100)
 
 
 def test_main():
