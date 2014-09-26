@@ -17,38 +17,19 @@ else:
     # On most other platforms the best timer is time.time()
     default_timer = time
 
-
-support_plots = None
-
-# Directory where plots will be saved
 plots_dir = 'plots'
-
-
-def init_plots():
-    global plt, support_plots
-    
-    # Check whether plots drawing is already initialized
-    if support_plots is not None:
-        return
-    
-    # Check whether "matplotlib" library is installed
-    try:
-        import matplotlib.pyplot as plt
-        support_plots = True
-        print '[+] Matplotlib is found'
-    except ImportError:
-        support_plots = False
-        print "[*] Matplotlib isn't found"
-        return
-        
-    # If plots are supported, make directory for saving images
-    try:
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    support_plots = False
+    print "[*] Matplotlib isn't found"
+else:
+    support_plots = True
+    print '[+] Matplotlib is found'
+    if os.path.exists(plots_dir):
         os.makedirs(plots_dir)
-        print '[+] Created directory "%s"' % plots_dir
-    except OSError:
-        # If directory already exists, do nothing
-        pass
- 
+
+
 # Plots' size (in inches)
 linear_plots_size = 6, 4
 other_plots_size = 5, 5
@@ -222,9 +203,6 @@ compare_arg_border = 0
 
 
 def run(name, comment, functions, cases, exec_compare=True, draw_plot=True):
-    if draw_plot:
-        init_plots()
-        print
     
     comment = '' if comment is None else ', ' + comment
     title = 'Function "%s"%s:\n' % (name, comment)
