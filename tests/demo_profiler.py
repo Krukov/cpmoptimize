@@ -1,11 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import sys
-import traceback
 
-sys.path.append(os.path.pardir)
 from cpmoptimize import cpmoptimize
 
 

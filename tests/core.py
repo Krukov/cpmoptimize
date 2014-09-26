@@ -6,7 +6,6 @@ import os
 import sys
 from time import time, clock
 
-sys.path.append(os.path.pardir)
 from cpmoptimize import cpmoptimize
 
 # Copy paste from timeit
@@ -17,7 +16,7 @@ else:
     # On most other platforms the best timer is time.time()
     default_timer = time
 
-plots_dir = 'plots'
+PLOTS_DIR = 'plots'
 try:
     import matplotlib.pyplot as plt
 except ImportError:
@@ -26,17 +25,17 @@ except ImportError:
 else:
     support_plots = True
     print '[+] Matplotlib is found'
-    if os.path.exists(plots_dir):
-        os.makedirs(plots_dir)
+    if os.path.exists(PLOTS_DIR):
+        os.makedirs(PLOTS_DIR)
 
 
 # Plots' size (in inches)
-linear_plots_size = 6, 4
-other_plots_size = 5, 5
+LINER_PLOTS_SIZE = 6, 4
+OTHER_PLOTS_SIZE = 5, 5
  
 # Font size for plots
-lable_fontsize = 11
-normal_fontsize = 9
+LABEL_FONTSIZE = 11
+NORMAL_FONTSIZE = 9
 
 
 def make_plot(filename, title, arguments, methods, scale):
@@ -46,7 +45,7 @@ def make_plot(filename, title, arguments, methods, scale):
     is_linear = (scale == 'linear')
     
     # Create new plot with specified size
-    plot_size = linear_plots_size if is_linear else other_plots_size
+    plot_size = LINER_PLOTS_SIZE if is_linear else OTHER_PLOTS_SIZE
     plt.figure(figsize=plot_size)
     
     for name, func, measures in methods:
@@ -65,44 +64,46 @@ def make_plot(filename, title, arguments, methods, scale):
     plt.yscale(scale)
     
     # Specify font for axes' ticks
-    plt.xticks(fontsize=normal_fontsize)
-    plt.yticks(fontsize=normal_fontsize)
+    plt.xticks(fontsize=NORMAL_FONTSIZE)
+    plt.yticks(fontsize=NORMAL_FONTSIZE)
     
     # Enable grid in the background
     plt.grid(True)
 
     # Specify plot's title, axes' labels and legend block location.
     # Also specify font size for text elements above.
-    plt.title(title, fontsize=lable_fontsize)
-    plt.xlabel('Argument', fontsize=normal_fontsize)
-    plt.ylabel('Time (seconds)', fontsize=normal_fontsize)
-    plt.legend(loc='upper left', fontsize=normal_fontsize)
+    plt.title(title, fontsize=LABEL_FONTSIZE)
+    plt.xlabel('Argument', fontsize=NORMAL_FONTSIZE)
+    plt.ylabel('Time (seconds)', fontsize=NORMAL_FONTSIZE)
+    plt.legend(loc='upper left', fontsize=NORMAL_FONTSIZE)
 
     # Fix paddings in the plot
     plt.tight_layout(0.2)
 
     # Save plot to the specified file
-    path = os.path.join(plots_dir, filename)
+    path = os.path.join(PLOTS_DIR, filename)
     plt.savefig(path)
     print '[*] Saved plot "%s"' % path
 
 
-# Class for formatting simple tables in console output
-
 class Table(object):
+    """Class for formatting simple tables in console output"""
     def __init__(self, cols):
-        # "cols" must be a list of pairs of column name (it will be
-        # used in table's head) and column width. Columns' values in
-        # one line are filled to desired width by spaces. They also
-        # will be separated by three-symbol delimiter " | " (first or
-        # last space is skipped if cell is placed nead table side).
-        
+        """
+        'cols' must be a list of pairs of column name (it will be
+        used in table's head) and column width. Columns' values in
+        one line are filled to desired width by spaces. They also
+        will be separated by three-symbol delimiter " | " (first or
+        last space is skipped if cell is placed nead table side).
+        """
         self._cols = cols
     
     def head(self):
-        # Print table's head (rows' titles)
-        
-        # Generate (and print) horizontal line consisting of dashes
+        """
+        Print table's head (rows' titles)
+        Generate (and print) horizontal line consisting of dashes
+        """
+
         self._hor = '+'
         for name, width in self._cols:
             self._hor += '-' * (width + 2) + '+'

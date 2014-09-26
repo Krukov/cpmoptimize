@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""This is testcase for xrange from Python 2.7.8 source code. We will
+"""
+This is testcase for xrange from Python 2.7.8 source code. We will
 use it to check correctness of xrange replacement from cpmoptimize
 module. Our version of xrange supports long numbers, therefore
 tests for OverflowError are disabled.
